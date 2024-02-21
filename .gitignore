@@ -6,7 +6,10 @@ __pycache__
 /server/__pycache__
 
 # dependencies
-/node_modules
+/node_modules/bin
+/node_modules/*/
+/node_modules/*.json
+
 /.pnp
 .pnp.js
 

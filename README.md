@@ -14,11 +14,15 @@ hw2_flask_crud_app/
 ```
 Directory tree string made with https://tree.nathanfriend.io/
 
-## React References
+## How to use this app!
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### 1. Install dependencies using `npm install`
+Note: You may have to delete package-lock.json before running this command.
 
-In the project directory, you can run:
+This will populate the node_modules directory and 
+hopefully allow you to start the app in the next step!
+
 ### Run/Build using `npm start`
 
 Runs the app in the development mode.\
@@ -27,6 +31,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
+## Other Commands - React References
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
