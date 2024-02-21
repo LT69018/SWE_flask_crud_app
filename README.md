@@ -2,6 +2,19 @@
 Due 2/29
 
 The project is a CRUD (Create, Read, Update, Delete) application developed using Flask, Python, JavaScript, HTML, and CSS. The primary goal is for me to learn the Flask framework and sqlite3 for database operations through hands-on experience!
+### Project Structure
+Followed instructions from the following blog to build the folders.
+https://blog.miguelgrinberg.com/post/how-to-create-a-react--flask-project
+```
+hw2_flask_crud_app/
+├── interface/
+│   └── *.js [React]
+└── server/
+    └── *.py [Flask]
+```
+Directory tree string made with https://tree.nathanfriend.io/
+
+## React References
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
