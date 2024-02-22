@@ -1,4 +1,7 @@
 # flask backend
-/server/venv
+server/venv/
 __pycache__
-/server/__pycache__
+server/__pycache__
+
+# my IDE settings
+.vscode/
