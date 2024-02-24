@@ -16,17 +16,26 @@ SWE_flask_crud_app/
 Directory tree string made with https://tree.nathanfriend.io/
 
 ## How to use this app!
+You can either follow the command instructions below or you can run the 
+`run_[backend/frontend].sh` files in their respective directories, 
+preferably in separate terminals.
+
 Make sure to have `npm` installed on your machine.
 https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Using my `.sh` files
 
+1. `bash ./setup.sh`
+2. `cd server && bash run_backend.sh`
+3. `cd interface && bash run_frontend.sh`
+
+
+### Running the commands manually
 ### 1. Install dependencies using `npm install`
 Note: You may have to delete package-lock.json before running this command.
 
 This will populate the node_modules directory and 
 hopefully allow you to start the app in the next step!
-
 
 ### Load Backend: `cd server && source venv/bin/activate && flask run`
 In another terminal, start up the backend by...
@@ -47,3 +56,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
