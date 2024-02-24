@@ -5,3 +5,4 @@ server/__pycache__
 
 # my IDE settings
 .vscode/
+.DS_Store
