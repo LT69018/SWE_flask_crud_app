@@ -12,8 +12,7 @@ def home():
     }
     
     add_options(response)
-    print(f"Attempting to return this response: {response}")
-    return True
+    return response # Note to self. Returning True causes Error 500 (internal server error) T-T
 
 
 def add_options(response):
