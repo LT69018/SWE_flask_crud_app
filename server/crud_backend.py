@@ -53,14 +53,9 @@ def create(new_user):
     response = {
         "body": "Inside /create"
     }
-    assert are_keys_matching_db(new_user), \
-        f"Invalid new_user dictionary format. See documentation."
     
     try:
-        db_connection = connect_to_db()
-        if db_connection is not None:
-            raise sqlite3Error
-        create_user(db_connection)
+        create_user(new_user)
         
         print("Successfully created user.")
         add_options(response)

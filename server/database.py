@@ -38,7 +38,7 @@ def create_users_table():
                             """
     try:
         db_connection = connect_to_db()
-        if db_connection is not None:
+        if db_connection is None:
             raise sqlite3Error
         
         db_cursor = db_connection.cursor()
@@ -60,7 +60,31 @@ def are_keys_matching_db(a_dict):
     """
     pass
 
-def create_user(db_connection, ):
+def create_user(user_dict):
+    """
+    _summary_
+
+    :param user_dict: {id: ..., name:..., points: ...}
+    :type user_dict: dict
+    :raises sqlite3Error: Unable to establish connection to database.
+    """    
+    
+    assert are_keys_matching_db(users_dict), f"Incorrect "
     CREATE_USER_SQL = """
     
-    """
+                      """
+    try:
+        db_connection = connect_to_db()
+        if db_connection is None:
+            raise sqlite3Error("Unable to establish connection with database")
+        
+        db_cursor = db_connection.cursor()
+        db_cursor.execute(CREATE_USER_SQL)
+        
+        db_connection.commit()
+        db_connection.close()
+        
+    except sqlite3Error as createTableError:
+        print("Unable to create table `users`.")
+        # todo: consider better way to handle error if it occurs
+        print(createTableError)
