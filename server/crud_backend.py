@@ -7,7 +7,7 @@ from flask_cors import CORS
 from config import *
 
 from database import \
-    connect_to_db, create_users_table, create_user, \
+    connect_to_db, create_users_table, create_user, read_all_users, \
     ID_KEY, NAME_KEY, POINTS_KEY, \
     are_keys_matching_db, \
     sqlite3Error
@@ -67,7 +67,25 @@ def create(new_user):
 @app.route('/read', methods=['GET'])
 def read():
     # i.e. select * from users
-    pass
+    """
+    Read ALL row to the user's table (in the future, may reduce to just 1 or N rows)
+
+    :return: HTTP response
+    :rtype: dictionary of response status
+    """
+    response = {
+        "body": "Inside /create"
+    }
+    
+    try:
+        response["users"] = read_all_users()
+        
+        print("Successfully created user.")
+        add_options(response)
+    except:
+        print("Unable to create user.")
+    
+    return response
 
 @app.route('/update', methods=['POST'])
 def update(id, new_points, new_name=""):

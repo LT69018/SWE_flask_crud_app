@@ -8,6 +8,7 @@ DB_FILE_PATH = os.path.join(DATABASE_DIR_PATH, DATABASE_FILE_NAME)
 ID_KEY = "id"
 NAME_KEY = "name"
 POINTS_KEY = "points"
+ALL_KEYS = [ID_KEY, NAME_KEY, POINTS_KEY]
 
 def connect_to_db():
     assert os.path.exists(DB_FILE_PATH), \
@@ -58,7 +59,11 @@ def are_keys_matching_db(a_dict):
     :param a_dict: Dictionary we want to see if matches our keys
     :type a_dict: dict
     """
-    pass
+    keys_list = list(a_dict.keys())
+    if len(keys_list) != len(ALL_KEYS) or \
+        set(keys_list) != set(ALL_KEYS):
+        return False
+    return True
 
 def create_user(user_dict):
     """
@@ -89,5 +94,31 @@ def create_user(user_dict):
         
     except sqlite3Error as createTableError:
         print("Unable to create table `users`.")
+        # todo: consider better way to handle error if it occurs
+        print(createTableError)
+        
+        
+def read_all_users():
+    """
+    Return the rows of the database in a JSON format so that the backend can parse it.
+
+    :raises sqlite3Error: Unable to establish connection to database.
+    """    
+    READ_ALL_USERS_SQL = f"""
+                          SELECT * from users
+                          """
+    try:
+        db_connection = connect_to_db()
+        if db_connection is None:
+            raise sqlite3Error("Unable to establish connection with database")
+        
+        db_cursor = db_connection.cursor()
+        db_cursor.execute(READ_ALL_USERS_SQL)
+        
+        db_connection.commit()
+        db_connection.close()
+        
+    except sqlite3Error as createTableError:
+        print("Unable to read all users from table `users`.")
         # todo: consider better way to handle error if it occurs
         print(createTableError)
