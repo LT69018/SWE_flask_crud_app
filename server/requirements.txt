@@ -1,0 +1,5 @@
+flask
+python-dotenv
+flask-cors
+
+flask == 3.0.2
