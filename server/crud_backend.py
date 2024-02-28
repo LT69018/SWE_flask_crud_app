@@ -6,7 +6,11 @@ import os
 from flask_cors import CORS
 from config import *
 
-from database import connect_to_db, create_users_table, sqlite3Error
+from database import \
+    connect_to_db, create_users_table, create_user, \
+    ID_KEY, NAME_KEY, POINTS_KEY, \
+    are_keys_matching_db, \
+    sqlite3Error
 # note to self, remember to commit and close once I instantiate a connection!
 
 app = Flask(__name__)
@@ -41,21 +45,47 @@ def home():
     return response
 
 @app.route('/create', methods=['POST'])
-def add_user(new_user):
-    # i.e. {uid: ..., attrs*:...*}
-    pass
+def create(new_user):
+    """
+    Add a row to the user's table
+    :param new_user: Attributes for the row we want to add!
+        Example {"id": ..., "name": ..., "points": ...}
+    :type new_user: dict
+    
+    :return: HTTP response
+    :rtype: dictionary of response status
+    """
+    response = {
+        "body": "Inside /create"
+    }
+    assert are_keys_matching_db(new_user), \
+        f"Invalid new_user dictionary format. See documentation."
+    
+    try:
+        db_connection = connect_to_db()
+        if db_connection is not None:
+            raise sqlite3Error
+        create_user(db_connection)
+        
+        print("Successfully created user.")
+        add_options(response)
+    except:
+        print("Unable to create user.")
+    
+    return response
 
 @app.route('/read', methods=['GET'])
-def get_users():
+def read():
     # i.e. select * from users
     pass
 
 @app.route('/update', methods=['POST'])
-def update_user(curr_user, new_user):
+def update(id, new_points, new_name=""):
+    # based on a user's id, give them a new points value.
     pass
 
 @app.route('/delete', methods=['POST'])
-def delete_user(user_id):
+def delete(user_id):
     pass
 
 

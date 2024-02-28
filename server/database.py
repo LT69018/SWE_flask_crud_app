@@ -5,6 +5,9 @@ import os
 from config import DATABASE_DIR_PATH, DATABASE_FILE_NAME
 
 DB_FILE_PATH = os.path.join(DATABASE_DIR_PATH, DATABASE_FILE_NAME)
+ID_KEY = "id"
+NAME_KEY = "name"
+POINTS_KEY = "points"
 
 def connect_to_db():
     assert os.path.exists(DB_FILE_PATH), \
@@ -24,13 +27,13 @@ def connect_to_db():
 # reference
 # https://www.sqlitetutorial.net/sqlite-python/creating-tables/
 def create_users_table(db_connection):
-    CREATE_USER_TABLE_SQL = """
+    CREATE_USER_TABLE_SQL = f"""
                             CREATE TABLE IF NOT EXISTS users(
-                                id INTEGER NOT NULL,
-                                name TEXT,
-                                points INTEGER,
+                                {ID_KEY} INTEGER NOT NULL,
+                                {NAME_KEY} TEXT,
+                                {POINTS_KEY} INTEGER,
                                 
-                                PRIMARY KEY (id)
+                                PRIMARY KEY ({ID_KEY})
                             );
                             """
     try:
@@ -41,3 +44,16 @@ def create_users_table(db_connection):
         print("Unable to create table `users`.")
         # todo: consider better way to handle error if it occurs
         print(createTableError)
+
+
+def are_keys_matching_db(a_dict):
+    """
+    
+
+    :param a_dict: Dictionary we want to see if matches our keys
+    :type a_dict: dict
+    """
+    pass
+
+def create_user(db_connection):
+    pass
