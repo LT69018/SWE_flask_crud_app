@@ -26,7 +26,7 @@ def connect_to_db():
         
 # reference
 # https://www.sqlitetutorial.net/sqlite-python/creating-tables/
-def create_users_table(db_connection):
+def create_users_table():
     CREATE_USER_TABLE_SQL = f"""
                             CREATE TABLE IF NOT EXISTS users(
                                 {ID_KEY} INTEGER NOT NULL,
@@ -37,8 +37,15 @@ def create_users_table(db_connection):
                             );
                             """
     try:
+        db_connection = connect_to_db()
+        if db_connection is not None:
+            raise sqlite3Error
+        
         db_cursor = db_connection.cursor()
         db_cursor.execute(CREATE_USER_TABLE_SQL)
+        
+        db_connection.commit()
+        db_connection.close()
         
     except sqlite3Error as createTableError:
         print("Unable to create table `users`.")
@@ -48,12 +55,12 @@ def create_users_table(db_connection):
 
 def are_keys_matching_db(a_dict):
     """
-    
-
     :param a_dict: Dictionary we want to see if matches our keys
     :type a_dict: dict
     """
     pass
 
-def create_user(db_connection):
-    pass
+def create_user(db_connection, ):
+    CREATE_USER_SQL = """
+    
+    """

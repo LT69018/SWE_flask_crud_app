@@ -2,7 +2,7 @@ import time
 from flask import Flask
 from flask import json
 import os
-# (currently unsuccessfully) attempted to use cors to me to use postman `localhost` requests.
+# (currently unsuccessfully) attempted to use cors to allow me to use postman `localhost` requests.
 from flask_cors import CORS
 from config import *
 
@@ -30,12 +30,7 @@ def home():
             "body": "welcome to the CRUD Flask Server"
         }
     try:
-        db_connection = connect_to_db()
-        if db_connection is not None:
-            raise sqlite3Error
-        create_users_table(db_connection)
-        db_connection.commit()
-        db_connection.close()
+        create_users_table()
         
         print("Loaded the home page.")
         add_options(response)
