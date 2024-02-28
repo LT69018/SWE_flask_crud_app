@@ -1,6 +1,35 @@
 import logo from './logo.svg';
 import './App.css';
 
+const DEBUG = true;
+
+// todo: consider if we want to use an App class instead of a function :p
+function getDataWithParams(url, params) {
+  axios.get('http://your-flask-server-endpoint')
+  .then(response => {
+    // Handle the response from the server if needed
+    if (DEBUG) {
+      console.log("[DEBUG] Received following from GET Request:", response.data);
+    }
+  })
+  .catch(error => {
+    console.error('Unable to perform GET request.';
+  });
+}
+
+function postDataWithParams(endpoint, params) {
+  axios.post('http://your-flask-server-endpoint')
+  .then(response => {
+    // Handle the response from the server if needed
+    if (DEBUG) {
+      console.log("[DEBUG] Received following from POST Request:", response.data);
+    }
+  })
+  .catch(error => {
+    console.error('Unable to perform POST request.';
+  });
+}
+
 function App() {
   return (
     <div className="App">

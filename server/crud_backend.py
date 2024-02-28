@@ -1,9 +1,21 @@
 import time
 from flask import Flask
 from flask import json
+import os
+# (currently unsuccessfully) attempted to use cors to me to use postman `localhost` requests.
+from flask_cors import CORS
 from config import *
 
 app = Flask(__name__)
+
+
+# Access the port from environment variables
+port = int(os.environ.get('FLASK_RUN_PORT', 5000))
+app.config['PORT'] = port
+
+# Enable CORS for specific routes
+CORS(app, resources={r'*': {'origins': '*'}})
+
 
 @app.route('/', methods=['GET'])
 def home():
