@@ -6,6 +6,9 @@ import os
 from flask_cors import CORS
 from config import *
 
+from database import connect_to_db, create_users_table, sqlite3Error
+# note to self, remember to commit and close once I instantiate a connection!
+
 app = Flask(__name__)
 
 
@@ -19,12 +22,22 @@ CORS(app, resources={r'*': {'origins': '*'}})
 
 @app.route('/', methods=['GET'])
 def home():
-    print("Loaded the home page.")
     response = {
-        "body": "welcome to the CRUD Flask Server"
-    }
+            "body": "welcome to the CRUD Flask Server"
+        }
+    try:
+        db_connection = connect_to_db()
+        if db_connection is not None:
+            raise sqlite3Error
+        create_users_table(db_connection)
+        db_connection.commit()
+        db_connection.close()
+        
+        print("Loaded the home page.")
+        add_options(response)
+    except:
+        print("Unable to load home page.")
     
-    add_options(response)
     return response
 
 @app.route('/create', methods=['POST'])

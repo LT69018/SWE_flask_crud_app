@@ -4,4 +4,5 @@
 # You would still have to change this on .flaskenv too 
 PORT_NUMBER = 5000  
 
-DATABASE_DIR_PATH = "../data/"
+DATABASE_DIR_PATH = "./database/"
+DATABASE_FILE_NAME = "users.db"

@@ -1,0 +1,2 @@
+# I believe we aren't supposed to put db files on github
+*.db
