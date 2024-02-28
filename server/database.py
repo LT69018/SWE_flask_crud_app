@@ -62,17 +62,20 @@ def are_keys_matching_db(a_dict):
 
 def create_user(user_dict):
     """
-    _summary_
+    Add a row to our users database!
 
-    :param user_dict: {id: ..., name:..., points: ...}
+    :param user_dict: Example - {id: ..., name:..., points: ...}
+        Make sure you supply the same keys that are constants in this file.
+        [ID_KEY, NAME_KEY, POINTS_KEY]
     :type user_dict: dict
     :raises sqlite3Error: Unable to establish connection to database.
     """    
     
-    assert are_keys_matching_db(users_dict), f"Incorrect "
-    CREATE_USER_SQL = """
-    
-                      """
+    assert are_keys_matching_db(user_dict), f"Incorrect user dictionary format. See documentation."
+    CREATE_USER_SQL = f"""
+                       INSERT INTO users 
+                       VALUES ({', '.join(user_dict.values())})
+                       """
     try:
         db_connection = connect_to_db()
         if db_connection is None:

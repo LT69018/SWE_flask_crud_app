@@ -40,3 +40,7 @@ https://docs.python.org/3/library/sqlite3.html
 https://www.sqlitetutorial.net/sqlite-python/creating-database/
 
 https://blog.miguelgrinberg.com/post/how-to-create-a-react--flask-project
+
+# Notes about utilizing database
+If you want to extend this database, make sure to utilize the column names
+specified as constants in `./database.py`
