@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3  # apparently part of standard python, so doesn't need to be installed?
 from sqlite3 import Error as sqlite3Error
 
 import os
@@ -16,7 +16,7 @@ def connect_to_db():
         f"Path doesn't exist: {DB_FILE_PATH}")
     db_connection = None
     try:
-        db_connection = sqlite3.connect(r"{DB_FILE_PATH}")
+        db_connection = sqlite3.connect(DB_FILE_PATH)
         return db_connection
     except sqlite3Error as connectionError:
         print("Unable to connect to database.")

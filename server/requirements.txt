@@ -1,5 +1,5 @@
 flask
 python-dotenv
 flask-cors
-sqlite3
+
 flask == 3.0.2
