@@ -3,6 +3,14 @@ import './App.css';
 import React, {Component} from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
+import pageStates from './Constants/pageStates.js'
+
+import Home from './Pages/Home.js'
+import CreateUser from './Pages/CreateUser.js'
+import ReadUsers from './Pages/ReadUsers.js'
+import UpdateUser from './Pages/UpdateUser.js'
+import DeleteUser from './Pages/DeleteUser.js'
+
 const DEBUG = true;
 // todo: make sure this works when called with endpoint as URL
 
@@ -12,6 +20,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      pageNumber: pageStates.home,
       // will be used in functions that check if we want to change pages or call backend functions 
       isCreatePressed:  false,
 
@@ -22,6 +31,7 @@ class App extends Component {
 
       users_table: [] 
       // put the table we're currently loading in here so that it is updated when I press the refresh button
+    
     }
   }
 
@@ -152,39 +162,63 @@ class App extends Component {
     this.setState({users_table: new_user_table});
   }
 
+  displayPage(pageNumber) {
+    if (pageNumber === pageStates.home) {
+      return (
+        <Home/>
+      );
+    } else if (pageNumber === pageStates.pageCreate) {
+      return (
+        <CreateUser/>
+      );
+    } else if (pageNumber === pageStates.pageRead) {
+      return (
+        <ReadUsers 
+          displayReadResult={this.displayReadResult}
+          reloadUserTable={this.reloadUserTable}
+        />
+      );
+    } else if (pageNumber === pageStates.pageUpdate) {
+      return (
+        <UpdateUser 
+        />
+      );
+    } else if (pageNumber === pageStates.pageDelete) {
+      return (
+        <DeleteUser 
+        />
+      );
+    } else {
+      // todo: move these to their own pages!
+      return (
+        <div>
+          Cannot render nonexistent page number!
+        </div>
+      );
+    }
+  }
+
+  setPageToCreate() {
+    console.log("Changing page to CreateUser");
+    this.setState({pageNumber: pageStates.createUser});
+  }
+
+
   render() {
     return (
         <div className="App">
-          <body>
             <div className="welcomeBanner" style={{height:"15vh", marginBottom:"5vh"}}>
               <h1>Welcome to my CRUD app!</h1>
               <span>
-                <a href="#createUser">Create</a> 
+                <a href="#createUsers"><span onClick="this.setPageToCreate(); return false;">Create</span></a>
               | <a href="#readUsers">Read</a> 
               | <a href="#updateUser">Update</a> 
               | <a href="#deleteUser">Delete</a> 
               </span>
             </div>
-            <div classname="createUser" style={{height:"15vh", marginBottom:"5vh"}}>
-              Create users here!
+            <div>
+              {this.displayPage(this.state.pageNumber)}
             </div>
-            <div classname="readUsers" style={{height:"15vh", marginBottom:"5vh", display:"block"}}>
-              Read users here!
-              {/* <form action={this.getUsers} method="get">
-                <button type="submit" formmethod="get">Load users table</button>
-              </form> */}
-              <div>
-                <div>{this.displayReadResult()}</div>
-                <button type="submit" onClick={this.reloadUserTable}>Load/Refresh</button>
-              </div>
-            </div>
-            <div classname="updateUser" style={{height:"15vh", marginBottom:"5vh"}}>
-              Update users here!
-            </div>
-            <div classname="deleteUser" style={{height:"15vh", marginBottom:"5vh"}}>
-              Delete users here!
-            </div>
-          </body>
         </div>
         
       );

@@ -86,3 +86,6 @@ https://github.com/tiangolo/fastapi/issues/4212#issuecomment-1435660722
 https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams#examples
     - The specific method I used:
     https://stackoverflow.com/questions/14525178/is-there-any-native-function-to-convert-json-to-url-parameters
+
+- how to have a link that calls a function:
+https://stackoverflow.com/questions/53426269/call-function-on-click-of-link-in-react-js 
