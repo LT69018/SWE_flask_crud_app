@@ -9,6 +9,7 @@ ID_KEY = "id"
 NAME_KEY = "name"
 POINTS_KEY = "points"
 ALL_KEYS = [ID_KEY, NAME_KEY, POINTS_KEY]
+ALL_KEYS_STR = ', '.join(ALL_KEYS)
 
 def connect_to_db():
     assert os.path.exists(DB_FILE_PATH), \
@@ -21,22 +22,22 @@ def connect_to_db():
     except sqlite3Error as connectionError:
         print("Unable to connect to database.")
         # todo: consider better way to handle error if it occurs
-        print(connectionError)
+        raise connectionError
         
-    return db_connection
         
 # reference
 # https://www.sqlitetutorial.net/sqlite-python/creating-tables/
 def create_users_table():
-    CREATE_USER_TABLE_SQL = f"""
-                            CREATE TABLE IF NOT EXISTS users(
-                                {ID_KEY} INTEGER NOT NULL,
-                                {NAME_KEY} TEXT,
-                                {POINTS_KEY} INTEGER,
-                                
-                                PRIMARY KEY ({ID_KEY})
-                            );
-                            """
+    CREATE_USER_TABLE_SQL = \
+        f"""
+        CREATE TABLE IF NOT EXISTS users(
+            {ID_KEY} INTEGER NOT NULL,
+            {NAME_KEY} TEXT,
+            {POINTS_KEY} INTEGER,
+            
+            PRIMARY KEY ({ID_KEY})
+        );
+        """
     try:
         db_connection = connect_to_db()
         if db_connection is None:
@@ -51,7 +52,7 @@ def create_users_table():
     except sqlite3Error as createTableError:
         print("Unable to create table `users`.")
         # todo: consider better way to handle error if it occurs
-        print(createTableError)
+        raise createTableError
 
 
 def are_keys_matching_db(a_dict):
@@ -77,25 +78,36 @@ def create_user(user_dict):
     """    
     
     assert are_keys_matching_db(user_dict), f"Incorrect user dictionary format. See documentation."
-    CREATE_USER_SQL = f"""
-                       INSERT INTO users 
-                       VALUES ({', '.join(user_dict.values())})
-                       """
+    user_values_list = list(user_dict.values())
+    # apparently, you can use `?` to act as a placeholder for the values.
+    # rather than populating the values yourself in SQL.
+    # i.e. execute("... VALUES (?, ?)", (value1, value2))
+    values_placeholder_str = ','.join('?'*len(user_values_list))
+    CREATE_USER_SQL = \
+        f"""
+        INSERT INTO users({ALL_KEYS_STR})
+        VALUES ({values_placeholder_str});
+        """
     try:
         db_connection = connect_to_db()
         if db_connection is None:
-            raise sqlite3Error("Unable to establish connection with database")
+            raise sqlite3Error("Unable to establish connection with database.")
         
         db_cursor = db_connection.cursor()
-        db_cursor.execute(CREATE_USER_SQL)
+        # apparently you have to pass in the data itself as well!
+        # not just the SQL string. 
+        # particularly, we use ? as a placeholder 
+        # rather than trying to turn our values into a string that will go into our command.
+        db_cursor.execute(CREATE_USER_SQL, user_values_list)
         
         db_connection.commit()
         db_connection.close()
         
-    except sqlite3Error as createTableError:
-        print("Unable to create table `users`.")
+    except sqlite3Error as createUserError:
+        print("Unable to create new_user.")
         # todo: consider better way to handle error if it occurs
-        print(createTableError)
+        raise createUserError
+
         
         
 def read_all_users():

@@ -70,23 +70,27 @@ def create():
     response = {
         "body": "`Create User` backend function."
     }
-    # new_user = request.args['new_user']
-    # print(f"request.args = {request.args} ({type(request.args)})\n" +
-    #       f"request.args['new_user']={new_user} ({type(new_user)})\n" + 
-    #       f"request.get_json() = {request.get_json} ({type(request.get_json())})")
     new_user = request.get_json().get('new_user')
+    if MY_BACKEND_DEBUG_FLAG:
+        print("Inside create()\n\tGot new_user = ", new_user)
     if not new_user:
         print("POST /create expected the body to contain key: 'new_user'")
         add_response_failed_options(response)
         return response
     
-    
     try:    
         create_user(new_user)
         print("Successfully created user.")
         add_response_success_options(response)
+    except sqlite3Error as db_error:
+        print("Database failed to create requested user.")
+        response['ok'] = False
+        # todo: DELETE this debugging error message. 
+        # Would need to replace with a more relavent 
+        # but less compromising statement if this were in production.
+        print('\tError message:', db_error)
     except Exception as e:
-        print("Unable to create user.")
+        print("Failed to run create endpoint. Something went wrong in the backend.")
         response['ok'] = False
         print(e)
     
