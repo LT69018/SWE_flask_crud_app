@@ -102,10 +102,13 @@ def read():
     Read ALL row to the user's table (in the future, may reduce to just 1 or N rows)
 
     :return: HTTP response
-    :rtype: dictionary of response status
+        response["users"] is an array of `rows` (tuples)
+        
+    :rtype: dictionary of response status and data.
     """
     response = {
-        "body": "`Read users` backend function"
+        "body": "`Read users` backend function",
+        "users": None
     }
     
     try:

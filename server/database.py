@@ -127,10 +127,11 @@ def read_all_users():
             raise sqlite3Error("Unable to establish connection with database")
         
         db_cursor = db_connection.cursor()
-        users_selected = db_cursor.execute(READ_ALL_USERS_SQL)
+        db_cursor.execute(READ_ALL_USERS_SQL)
+        users_selected = db_cursor.fetchall()
         if MY_DATABASE_DEBUG_FLAG:
-            print("Inside read_all_users()".center(40, '~'))
-            print(f"users_selected = {users_selected}")
+            print(" Inside read_all_users() ".center(40, '~'))
+            print(f"\tusers_selected = {users_selected}")
         db_connection.commit()
         db_connection.close()
         
