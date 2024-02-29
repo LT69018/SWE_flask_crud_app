@@ -6,10 +6,9 @@ from flask_cors import CORS
 from config import *
 
 from database import \
-    connect_to_db, create_users_table, create_user, read_all_users, \
+    create_users_table, create_user, read_all_users, \
     ID_KEY, NAME_KEY, POINTS_KEY, \
-    are_keys_matching_db, \
-    sqlite3Error
+    are_keys_matching_db, convert_table_to_json, sqlite3Error
 # note to self, remember to commit and close once I instantiate a connection!
 
 app = Flask(__name__)
@@ -112,10 +111,14 @@ def read():
     }
     
     try:
-        response["users"] = read_all_users()
-        if response["users"] == None:
+        db_read_response = read_all_users()
+        converted_json = convert_table_to_json(db_read_response)
+        if converted_json == None:
             print("Backend couldn't detect any users :0.")
+        response["users"] = converted_json
         print("Successfully read ALL users.")
+        if MY_BACKEND_DEBUG_FLAG:
+            print(f"[BACKEND DEBUG] Converted DB response as JSON:\n\t{converted_json}")
         add_response_success_options(response)
     except Exception as e:
         print("Unable to read ALL users.")
@@ -152,3 +155,4 @@ def add_response_failed_options(response):
     '''
     response["ok"] = False
     return response
+

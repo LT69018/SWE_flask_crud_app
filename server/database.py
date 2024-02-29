@@ -141,3 +141,31 @@ def read_all_users():
         print("Unable to read all users from table `users`.")
         # todo: consider better way to handle error if it occurs
         raise readAllUsersError
+    
+    
+def convert_table_to_json(table):
+    """
+    Turn query result into something the frontend can display
+    Expecting the first `column` to be the ID (all unique).
+
+    :param table: i.e. result of SELECT query.
+    :type table: list of tuples
+    
+    :return: Something that MUI can render.
+    :rtype: list of dictionaries, each with a unique ID.
+    """
+    converted_json = []
+    for row_tuple in table:
+        assert len(row_tuple) == len(ALL_KEYS), \
+            "Unable to convert to custom json.\n\t" + \
+            "Expected row tuples to have same number of columns as database.\n\t" + \
+            f"Got {len(row_tuple)} expected {len(ALL_KEYS)}."
+        
+        new_row_dict = {}
+        for i, attr in enumerate(ALL_KEYS):
+            # todo: consider having the result json use different key names (security)
+            new_row_dict[attr] = row_tuple[i]
+            
+        converted_json.append(new_row_dict)
+        
+    return converted_json
