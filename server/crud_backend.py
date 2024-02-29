@@ -111,10 +111,11 @@ def read():
     try:
         response["users"] = read_all_users()
         
-        print("Successfully created user.")
+        print("Successfully read ALL users.")
         add_response_success_options(response)
     except:
-        print("Unable to create user.")
+        print("Unable to read ALL users.")
+        add_response_failed_options(response)
     
     return response
 
