@@ -110,11 +110,15 @@ def read():
     
     try:
         response["users"] = read_all_users()
-        
+        if response["users"] == None:
+            print("Backend couldn't detect any users :0.")
         print("Successfully read ALL users.")
         add_response_success_options(response)
-    except:
+    except Exception as e:
         print("Unable to read ALL users.")
+        if MY_BACKEND_DEBUG_FLAG:
+            print(f"DEBUG: {e}")
+        
         add_response_failed_options(response)
     
     return response

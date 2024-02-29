@@ -2,7 +2,8 @@ import sqlite3  # apparently part of standard python, so doesn't need to be inst
 from sqlite3 import Error as sqlite3Error
 
 import os
-from config import DATABASE_DIR_PATH, DATABASE_FILE_NAME
+from config import DATABASE_DIR_PATH, DATABASE_FILE_NAME, \
+    MY_DATABASE_DEBUG_FLAG # todo: <- delete later?
 
 DB_FILE_PATH = os.path.join(DATABASE_DIR_PATH, DATABASE_FILE_NAME)
 ID_KEY = "id"
@@ -119,18 +120,23 @@ def read_all_users():
     READ_ALL_USERS_SQL = f"""
                           SELECT * from users
                           """
+
     try:
         db_connection = connect_to_db()
         if db_connection is None:
             raise sqlite3Error("Unable to establish connection with database")
         
         db_cursor = db_connection.cursor()
-        db_cursor.execute(READ_ALL_USERS_SQL)
-        
+        users_selected = db_cursor.execute(READ_ALL_USERS_SQL)
+        if MY_DATABASE_DEBUG_FLAG:
+            print("Inside read_all_users()".center(40, '~'))
+            print(f"users_selected = {users_selected}")
         db_connection.commit()
         db_connection.close()
         
-    except sqlite3Error as createTableError:
+        return users_selected
+        
+    except sqlite3Error as readAllUsersError:
         print("Unable to read all users from table `users`.")
         # todo: consider better way to handle error if it occurs
-        print(createTableError)
+        raise readAllUsersError
