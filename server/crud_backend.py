@@ -31,7 +31,7 @@ def home():
     try:
         create_users_table()
         
-        print("Loaded the home page.")
+        print("Successfully loaded the home page :D")
         add_options(response)
     except:
         response['ok'] = False
@@ -53,9 +53,12 @@ def create():
     :rtype: dictionary of response status
     """
     response = {
-        "body": "Inside /create"
+        "body": "`Create User` backend function."
     }
-    new_user = request.get_json()
+    new_user = request.args['new_user']
+    print(f"request.args = {request.args} ({type(request.args)})\n" +
+          f"request.args['new_user']={new_user} ({type(new_user)})\n" + 
+          f"request.get_json() = {request.get_json} ({type(request.get_json())})")
     try:
         create_user(new_user)
         
@@ -70,7 +73,6 @@ def create():
 
 @app.route('/read', methods=['GET'])
 def read():
-    # i.e. select * from users
     """
     Read ALL row to the user's table (in the future, may reduce to just 1 or N rows)
 
@@ -78,7 +80,7 @@ def read():
     :rtype: dictionary of response status
     """
     response = {
-        "body": "Inside /create"
+        "body": "`Read users` backend function"
     }
     
     try:

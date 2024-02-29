@@ -4,30 +4,39 @@ import './App.css';
 const DEBUG = true;
 
 // todo: consider if we want to use an App class instead of a function :p
-function getDataWithParams(url, params) {
-  axios.get('http://your-flask-server-endpoint')
-  .then(response => {
-    // Handle the response from the server if needed
-    if (DEBUG) {
-      console.log("[DEBUG] Received following from GET Request:", response.data);
-    }
-  })
-  .catch(error => {
-    console.error('Unable to perform GET request.';
+
+// todo: make sure this works when called with endpoint as URL
+// Borrowed from  https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+function getDataWithParams(endpoint, params) {
+  const response = await fetch(endpoint, {
+    method: 'GET', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+        'Content-Type': 'application/json' // <- IMPORTANT to allow me to send our JSON body (arguments)
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(params) // body data type must match "Content-Type" header
   });
+  return response.json();
 }
 
 function postDataWithParams(endpoint, params) {
-  axios.post('http://your-flask-server-endpoint')
-  .then(response => {
-    // Handle the response from the server if needed
-    if (DEBUG) {
-      console.log("[DEBUG] Received following from POST Request:", response.data);
-    }
-  })
-  .catch(error => {
-    console.error('Unable to perform POST request.';
+  const response = await fetch(endpoint, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+        'Content-Type': 'application/json' // <- IMPORTANT to allow me to send our JSON body (arguments)
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(params) // body data type must match "Content-Type" header
   });
+  return response.json();
 }
 
 function App() {
