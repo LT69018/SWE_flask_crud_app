@@ -32,12 +32,27 @@ def home():
         create_users_table()
         
         print("Successfully loaded the home page :D")
-        add_options(response)
+        add_response_success_options(response)
     except:
         response['ok'] = False
         print("Unable to load home page.")
     
     return response
+
+# todo: delete this once we are sure all our post methods work.
+# usage: figure out how my post parameters and body values
+# are being received in the backend.
+@app.route('/test_post', methods=['POST'])
+def test():
+    
+    request_args = request.args
+    request_json = request.get_json()
+    print(f"request_args = {request_args}")
+    print(f"request_json = {request_json}")
+    return {"ok":True, 
+            "request_args":request_args,
+            "request_json": request_json}
+
 
 @app.route('/create', methods=['POST'])
 def create():
@@ -55,15 +70,21 @@ def create():
     response = {
         "body": "`Create User` backend function."
     }
-    new_user = request.args['new_user']
-    print(f"request.args = {request.args} ({type(request.args)})\n" +
-          f"request.args['new_user']={new_user} ({type(new_user)})\n" + 
-          f"request.get_json() = {request.get_json} ({type(request.get_json())})")
-    try:
+    # new_user = request.args['new_user']
+    # print(f"request.args = {request.args} ({type(request.args)})\n" +
+    #       f"request.args['new_user']={new_user} ({type(new_user)})\n" + 
+    #       f"request.get_json() = {request.get_json} ({type(request.get_json())})")
+    new_user = request.get_json().get('new_user')
+    if not new_user:
+        print("POST /create expected the body to contain key: 'new_user'")
+        add_response_failed_options(response)
+        return response
+    
+    
+    try:    
         create_user(new_user)
-        
         print("Successfully created user.")
-        add_options(response)
+        add_response_success_options(response)
     except Exception as e:
         print("Unable to create user.")
         response['ok'] = False
@@ -87,7 +108,7 @@ def read():
         response["users"] = read_all_users()
         
         print("Successfully created user.")
-        add_options(response)
+        add_response_success_options(response)
     except:
         print("Unable to create user.")
     
@@ -105,10 +126,17 @@ def delete(user_id):
     pass
 
 
-def add_options(response):
+def add_response_success_options(response):
     '''
     Sets default options for all return responses that are successful.
     '''
     response["headers"] = {"content-type": "application/json"},
     response["ok"] = True
+    return response
+
+def add_response_failed_options(response):
+    '''
+    Sets default options for all return responses that are FAILED.
+    '''
+    response["ok"] = False
     return response
