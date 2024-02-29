@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import React, {Component} from 'react';
 
 const DEBUG = true;
 
@@ -7,7 +8,7 @@ const DEBUG = true;
 
 // todo: make sure this works when called with endpoint as URL
 // Borrowed from  https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-function getDataWithParams(endpoint, params) {
+async function getDataWithParams(endpoint, params) {
   const response = await fetch(endpoint, {
     method: 'GET', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
@@ -23,7 +24,7 @@ function getDataWithParams(endpoint, params) {
   return response.json();
 }
 
-function postDataWithParams(endpoint, params) {
+async function postDataWithParams(endpoint, params) {
   const response = await fetch(endpoint, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
@@ -40,23 +41,37 @@ function postDataWithParams(endpoint, params) {
 }
 
 function App() {
+  // todo: either here or in ../public/index.html - tie in Bootstrap
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <body>
+        <div className="welcomeBanner" style={{height:"15vh", marginBottom:"5vh"}}>
+          <h1>Welcome to my CRUD app!</h1>
+          <span>
+            <a href="#createUser">Create</a> 
+          | <a href="#readUsers">Read</a> 
+          | <a href="#updateUser">Update</a> 
+          | <a href="#deleteUser">Delete</a> 
+          </span>
+        </div>
+        <div classname="createUser" style={{height:"15vh", marginBottom:"5vh"}}>
+          Create users here!
+        </div>
+        <div classname="readUsers" style={{height:"15vh", marginBottom:"5vh", display:"block"}}>
+          Read users here!
+          <form action="/read" method="get">
+            <button type="submit" formmethod="get">Load users table</button>
+          </form>
+        </div>
+        <div classname="updateUser" style={{height:"15vh", marginBottom:"5vh"}}>
+          Update users here!
+        </div>
+        <div classname="deleteUser" style={{height:"15vh", marginBottom:"5vh"}}>
+          Delete users here!
+        </div>
+      </body>
     </div>
+    
   );
 }
 
