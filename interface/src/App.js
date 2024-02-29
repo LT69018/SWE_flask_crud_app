@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import React, {Component} from 'react';
 
@@ -20,7 +20,7 @@ class App extends Component {
   }
 
   // Borrowed from  https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-  async getDataWithParams(endpoint, params) {
+  async getDataWithParams(endpoint, params = '') {
     const response = await fetch(endpoint, {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
@@ -52,6 +52,19 @@ class App extends Component {
     return response.json();
   }
 
+  // handle button presses
+  toggleReadPressed = () => {
+    if (this.state.isReadPressed) {
+      console.log("Toggling read OFF");
+      this.setState({isReadPressed: false});
+    } else {
+      console.log("Toggling read ON");
+      this.setState({isReadPressed: true});
+    }
+    this.getUsers(this.state.isReadPressed);
+  }
+
+
   // -----------------------------------------------------
   // These functions will only run when their respective button state is toggled.
   async createUser(new_user) {
@@ -61,11 +74,33 @@ class App extends Component {
     }
   }
 
-  async getUsers() {
-    /* GET the /read endpoint */
+  displayReadResult(data) {
+    return (<div>READ RESULT DATA WILL GO HERE</div>);
+  }
+
+  async getUsers(doReload) {
     if (DEBUG) {
       console.log("Called getUsers!")
     }
+    // i.e. pass in this.state.isReadPressed
+    if (doReload) {
+      /* GET the /read endpoint */
+      
+      try {
+        const data = await this.getDataWithParams('/read');
+        console.log("Received data!");
+        console.log(data);
+  
+
+      } catch (readBackendError) {
+        console.log("Unable to read users!");
+        if (DEBUG) {
+          console.log(readBackendError);
+        }
+      }
+    } 
+    // Don't display anything if we weren't able to load data.
+    return (<div>Nothing to display yet.</div>);
   }
 
   async updateUserPoints(user_id, new_points) {
@@ -104,9 +139,13 @@ class App extends Component {
             </div>
             <div classname="readUsers" style={{height:"15vh", marginBottom:"5vh", display:"block"}}>
               Read users here!
-              <form action={this.getUsers} method="get">
+              {/* <form action={this.getUsers} method="get">
                 <button type="submit" formmethod="get">Load users table</button>
-              </form>
+              </form> */}
+              <div>
+                <div>{this.displayReadResult()}</div>
+                <button type="submit" onClick={this.toggleReadPressed}>Load/Refresh</button>
+              </div>
             </div>
             <div classname="updateUser" style={{height:"15vh", marginBottom:"5vh"}}>
               Update users here!
