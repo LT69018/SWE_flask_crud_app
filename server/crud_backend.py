@@ -1,6 +1,5 @@
 import time
-from flask import Flask
-from flask import json
+from flask import Flask, json, request
 import os
 # (currently unsuccessfully) attempted to use cors to allow me to use postman `localhost` requests.
 from flask_cors import CORS
@@ -35,14 +34,17 @@ def home():
         print("Loaded the home page.")
         add_options(response)
     except:
+        response['ok'] = False
         print("Unable to load home page.")
     
     return response
 
 @app.route('/create', methods=['POST'])
-def create(new_user):
+def create():
     """
     Add a row to the user's table
+    
+    (implicit paremeter, expected when called using HTTP POST request.)
     :param new_user: Attributes for the row we want to add!
         Example {"id": ..., "name": ..., "points": ...}
     :type new_user: dict
@@ -53,14 +55,16 @@ def create(new_user):
     response = {
         "body": "Inside /create"
     }
-    
+    new_user = request.get_json()
     try:
         create_user(new_user)
         
         print("Successfully created user.")
         add_options(response)
-    except:
+    except Exception as e:
         print("Unable to create user.")
+        response['ok'] = False
+        print(e)
     
     return response
 
@@ -87,10 +91,12 @@ def read():
     
     return response
 
+
 @app.route('/update', methods=['POST'])
 def update(id, new_points, new_name=""):
     # based on a user's id, give them a new points value.
     pass
+
 
 @app.route('/delete', methods=['POST'])
 def delete(user_id):
