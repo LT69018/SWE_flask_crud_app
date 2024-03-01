@@ -1,14 +1,13 @@
 // import logo from './logo.svg';
 import './bootstrap.css';
 import React, {Component} from 'react';
-import { DataGrid } from '@mui/x-data-grid';
 
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+// import NavDropdown from 'react-bootstrap/NavDropdown';
 
-// no time to try and make these work.
+// no time to try and make this work.
 // import ThemeProvider from 'react-bootstrap/ThemeProvider';
 
 import pageStates from './Constants/pageStates.js'
@@ -91,59 +90,7 @@ class App extends Component {
     }
   }
 
-  displayReadResult(data) {
-    const users_table = this.state.users_table;
-    console.log("Trying to display the users table: ", users_table);
-    return (
-      <div height="50%">
-        READ RESULT DATA WILL GO HERE
-        {/* Not allowed to just try to display our list on the page, need to render it */}
-        {/* <div>{this.state.users_table}</div> */}
-        <DataGrid
-          rows={users_table}
-          columns={["id", "name", "points"]}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          key="id"
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-        />
-      </div>
-    );
-  }
-
-  /* GET the /read endpoint */
-  async getUsers() {
-    /*
-    Expecting response from the server in this format:
-    {
-      body: "Some message about the function being executed",
-      users: [{id: ..., attrs*:...}, ...]
-    }
-    */
-    if (DEBUG) {
-      console.log("Called get Users!")
-    }
-    try {
-      const data = await this.getDataWithParams('/read');
-      if (DEBUG) {
-        console.log("Received data from getUsers!");
-        console.log(data);
-      }
-      // todo: error checking if the result doesn't contain "users"
-      this.setState({users_table: data["users"]});
-
-    } catch (readBackendError) {
-      console.log("Something went wrong! Unable to read users!");
-      if (DEBUG) {
-        console.log(readBackendError);
-      }
-    }
-  } 
-
+  
   async updateUserPoints(user_id, new_points) {
     /* POST the /update endpoint 
     Currently only thinking to let them change the points value, not the name.
@@ -163,12 +110,6 @@ class App extends Component {
   // -----------------------------------------------------
 
 
-  // handle button presses
-  async reloadUserTable() {
-    console.log("Reloading users_table!");
-    const new_user_table = await this.getUsers();
-    this.setState({users_table: new_user_table});
-  }
 
   displayPage(pageNumber) {
     if (pageNumber === pageStates.home) {
@@ -182,8 +123,10 @@ class App extends Component {
     } else if (pageNumber === pageStates.pageRead) {
       return (
         <ReadUsers 
-          displayReadResult={this.displayReadResult}
-          reloadUserTable={this.reloadUserTable}
+          getDataWithParams={this.getDataWithParams}
+
+          // displayReadResult={this.displayReadResult}
+          // reloadUserTable={this.reloadUserTable}
         />
       );
     } else if (pageNumber === pageStates.pageUpdate) {
@@ -241,7 +184,6 @@ class App extends Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-
         <div style={{ marginTop: "5vh" }}>
           {this.displayPage(this.state.pageNumber)}
         </div>
