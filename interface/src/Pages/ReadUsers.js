@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 
 import { DataGrid } from '@mui/x-data-grid';
+import { GridColDef } from '@mui/x-data-grid';
 import Container from 'react-bootstrap/Container';
 import DEBUG from '../App.js';
 
 class ReadUsers extends Component {
   constructor(props) {
     super(props);
+    this.columns = [
+      { field: 'id', headerName: 'id', width: 150 },
+      { field: 'name', headerName: 'Name', width: 400 },
+      { field: 'points', headerName: 'Points', width: 150 },
+    ];
     this.state = {
       users_table: null,
     };
@@ -29,12 +35,9 @@ class ReadUsers extends Component {
 
     return (
       <Container>
-        READ RESULT DATA WILL GO HERE
-        {/* Not allowed to just try to display our list on the page, need to render it */}
-        {/* <div>{this.state.users_table}</div> */}
         <DataGrid
           rows={users_table}
-          columns={["id", "name", "points"]}
+          columns={this.columns}
           initialState={{
             pagination: {
               paginationModel: { page: 0, pageSize: 5 },
@@ -84,9 +87,6 @@ class ReadUsers extends Component {
         <h2>Welcome to the READ Page!</h2>
         <div classname="ReadUsers" style={{height:"15vh", marginBottom:"5vh", display:"block"}}>
           Read users here!
-          {/* <form action={this.getUsers} method="get">
-            <button type="submit" formmethod="get">Load users table</button>
-          </form> */}
           <div>
             <div>{this.displayReadResult()}</div>
             <button type="submit" onClick={() => this.reloadUserTable()}>Load/Refresh</button>
