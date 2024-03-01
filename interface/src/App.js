@@ -1,7 +1,15 @@
 // import logo from './logo.svg';
-import './App.css';
+import './bootstrap.css';
 import React, {Component} from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+
+// no time to try and make these work.
+// import ThemeProvider from 'react-bootstrap/ThemeProvider';
 
 import pageStates from './Constants/pageStates.js'
 
@@ -156,9 +164,9 @@ class App extends Component {
 
 
   // handle button presses
-  reloadUserTable = () => {
+  async reloadUserTable() {
     console.log("Reloading users_table!");
-    const new_user_table = this.getUsers();
+    const new_user_table = await this.getUsers();
     this.setState({users_table: new_user_table});
   }
 
@@ -203,25 +211,42 @@ class App extends Component {
     this.setState({pageNumber: pageStates.createUser});
   }
 
+  setPage(newPageNumber) {
+    console.log("Setting page: ", newPageNumber);
+    this.setState({pageNumber: newPageNumber});
+    return false;
+  }
+
+  createClicked = (e) => {
+    e.preventDefault();
+    console.log('The create link was clicked.');
+    this.setState({pageNumber: pageStates.createPage});
+  }
 
   render() {
     return (
-        <div className="App">
-            <div className="welcomeBanner" style={{height:"15vh", marginBottom:"5vh"}}>
-              <h1>Welcome to my CRUD app!</h1>
-              <span>
-                <a href="#createUsers"><span onClick="this.setPageToCreate(); return false;">Create</span></a>
-              | <a href="#readUsers">Read</a> 
-              | <a href="#updateUser">Update</a> 
-              | <a href="#deleteUser">Delete</a> 
-              </span>
-            </div>
-            <div>
-              {this.displayPage(this.state.pageNumber)}
-            </div>
+      <Container>
+        <Navbar bg="light" expand="lg">
+          <Navbar.Brand href="#" onClick={() => this.setPage(pageStates.home)}>
+            JT CRUD App
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link onClick={() => this.setPage(pageStates.home)}>Home</Nav.Link>
+              <Nav.Link onClick={() => this.setPage(pageStates.pageCreate)}>Create</Nav.Link>
+              <Nav.Link onClick={() => this.setPage(pageStates.pageRead)}>Read</Nav.Link>
+              <Nav.Link onClick={() => this.setPage(pageStates.pageUpdate)}>Update</Nav.Link>
+              <Nav.Link onClick={() => this.setPage(pageStates.pageDelete)}>Delete</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+
+        <div style={{ marginTop: "5vh" }}>
+          {this.displayPage(this.state.pageNumber)}
         </div>
-        
-      );
+      </Container>
+    );
   }
   
 }
