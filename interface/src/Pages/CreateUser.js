@@ -18,7 +18,7 @@ class CreateUser extends Component {
         Use whatever IP address / localhost name is equivalent on your machine.
         </div>
         <hr/>
-        Make sure to set 'Content-type':'application/json'
+        Make sure to set the following header. <span style={{color: "green"}}>'Content-type':'application/json'</span>
         <br/>
         Send the new_user data in the <span style={{color: "blue"}}>'body'</span> of the request.
         i.e. <div style={{color: "green"}}>{demo_post_create_body}</div>

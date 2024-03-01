@@ -16,53 +16,63 @@ SWE_flask_crud_app/
 Directory tree string made with https://tree.nathanfriend.io/
 
 ## How to use this app!
-You can either follow the command instructions below or you can run the 
-`run_[backend/frontend].sh` files in their respective directories, 
-preferably in separate terminals.
-
 Make sure to have `npm` installed on your machine.
 https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
-### Using my `.sh` files
+I did my best to document what I was able to finish implementing and what I didn't.
+I may reference the app IP address as localhost and 127.0.0.1 interchangably.
+
+The frontend (`./interface`) runs on port 3000. 
+(default for react. Would need google's help if you want to change this.)
+
+
+The backend (`./server`) runs on port 5000 (see `./server/.flaskenv`)
+
+
+
+### Run using my `.sh` files
 
 1. `bash ./setup.sh`
-2. `cd server && bash run_backend.sh`
-3. `cd interface && bash run_frontend.sh`
+
+(in a separate terminal)
+
+2. `cd server && pip install -r requirements.txt && bash run_backend.sh`
+
+(in another separate terminal)
+
+3. `cd interface && npm install && bash run_frontend.sh`
+
+Note that these include the command to install dependencies.
+
+But if you want to rerun, I recommend just using
+`bash run_[backend/frontend].sh` in their respective terminals.
+
+### Run by following step by step instructions
+See the following file: `./manualBuild_README.md`
+
+# Appearance!
+__**In case you are unable to build my site, take a look at these snapshots!**__
+## Home Page
+<img src="./images/HomePage_part1.png" height="300px"/>
+
+## Create Page
+
+<img src="./images/CreatePage_part1.png" height="300px"/>
+<img src="./images/CreatePage_part2.png"/>
 
 
-### Running the commands manually
-### 1. Install dependencies 
-```npm install```
-Note: You may have to delete package-lock.json before running this command.
+## Read Page
+<img src="./images/ReadPage_part1.png" height="300px"/>
+After pressing the "refresh" button:
+<img src="./images/ReadPage_part2.png" height="300px">
 
-This will populate the node_modules directory and 
-hopefully allow you to start the app in the next step!
-
-### Load Backend: 
+To reproduce, you need to perform a HTTP Request
 ```
-cd server && source venv/bin/activate && flask run
+POST 127.0.0.1:5000/create
 ```
-In another terminal, start up the backend by...
-If you didn't already create the `venv` yet
-- do `python3 -m venv server/venv`
-Using flask 
-`source venv/bin/activate && flask run`
-
-If you want to disable debug mode, 
-get rid of `FLASK_ENV=development` in ./server/.flaskenv
-
-To change the port from 5000, you can also edit that .flaskenv file.
-
-### Load Frontend: 
-```
-cd interface && npm start
-```
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+See the `Create` page for on-site instructions.
+See `./server/README.md` for more as well.
 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Update/Delete - Ran Out of Time
+Not much to see on these tabs :P

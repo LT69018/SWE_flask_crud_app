@@ -30,7 +30,7 @@ class ReadUsers extends Component {
 
     if (users_table === null) {
       console.log("users_table is currently null. :(");
-      return (<div>Unable to load table.</div>)
+      return (<div>Unable to load table. Try pressing `refresh`.</div>)
     }
 
     return (
@@ -84,7 +84,7 @@ class ReadUsers extends Component {
 	render() {
 		return (
       <div>
-        <h2>Welcome to the READ Page!</h2>
+        <h2>Welcome to the Read Page!</h2>
         <div classname="ReadUsers" style={{height:"15vh", marginBottom:"5vh", display:"block"}}>
           Read users here!
           <div>
