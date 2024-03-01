@@ -124,9 +124,6 @@ class App extends Component {
       return (
         <ReadUsers 
           getDataWithParams={this.getDataWithParams}
-
-          // displayReadResult={this.displayReadResult}
-          // reloadUserTable={this.reloadUserTable}
         />
       );
     } else if (pageNumber === pageStates.pageUpdate) {
